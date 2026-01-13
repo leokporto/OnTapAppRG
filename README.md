@@ -32,7 +32,6 @@ OnTapAppRG
 - [ ] Beer Endpoints
 - [ ] User endpoints
 - [ ] logging
-- [ ] simple resilience (retry)
 - [ ] jwt authentication
 - [ ] authorization
 
