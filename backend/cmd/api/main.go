@@ -1,24 +1,28 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/leokporto/OnTapAppRG/backend/internal/beer"
 	"github.com/leokporto/OnTapAppRG/backend/internal/health"
 )
 
 func main() {
-	r := mux.NewRouter()
+	r := chi.NewRouter()
 
-	r.HandleFunc("/health", logging(health.Handler()))
+	r.Use(
+		middleware.Logger,
+		middleware.Recoverer,
+		middleware.Timeout(30),
+	)
+
+	r.Get("/health", health.Handler())
+
+	r.Get("/beers", beer.GetAll)
+	r.Get("/beers/{id}", beer.GetById)
+	r.Get("/beers/styles", beer.GetStyles)
 
 	http.ListenAndServe(":8080", r)
-}
-
-func logging(f http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.URL.Path)
-		f(w, r)
-	}
 }
