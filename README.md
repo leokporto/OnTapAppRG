@@ -28,8 +28,7 @@ OnTapAppRG
 
 ### Backend
 
-- [ ] Beer repository
-- [ ] Beer Endpoints
+- [ ] Beer store (DB] access. Not a liquor shop)
 - [ ] User endpoints
 - [ ] logging
 - [ ] jwt authentication
@@ -37,6 +36,7 @@ OnTapAppRG
 
 ### Frontend
 
+- [ ] The whole UI: Header, content, nav menus
 - [ ] User registration and authentication using Google authenticator (OpenID)
 
 
