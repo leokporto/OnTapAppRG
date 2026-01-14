@@ -9,17 +9,27 @@ import (
 	"github.com/go-chi/chi/v5"
 )
 
-func GetAll(w http.ResponseWriter, r *http.Request) {
-	beers := []Beer{
-		{ID: 1, Name: "Punk IPA", Style: "IPA", Brewery: "Punk", FullName: "Punk IPA", ABV: 6.5, MinIBU: 45, MaxIBU: 55},
-		{ID: 2, Name: "Heineken", Style: "Lager", Brewery: "Heineken", FullName: "Heineken Lager", ABV: 5, MinIBU: 10, MaxIBU: 11},
+type Handler struct {
+	store BeerStore
+}
+
+func NewHandler(store BeerStore) *Handler {
+	return &Handler{store: store}
+}
+
+func (h *Handler) GetAll(w http.ResponseWriter, r *http.Request) {
+	beers, err := h.store.ListAll(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(beers)
 
 }
 
-func GetById(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	beerId, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil || beerId <= 0 {
@@ -33,7 +43,7 @@ func GetById(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(response)
 }
 
-func GetStyles(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) GetStyles(w http.ResponseWriter, r *http.Request) {
 	styles := []string{"IPA", "Lager"}
 
 	json.NewEncoder(w).Encode(styles)
