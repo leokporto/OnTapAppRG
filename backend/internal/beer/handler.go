@@ -38,7 +38,7 @@ func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := Beer{ID: 1, Name: "Punk IPA", Style: "IPA", Brewery: "Punk", FullName: "Punk IPA", ABV: 6.5, MinIBU: 45, MaxIBU: 55}
+	response := Beer{ID: 1, Name: "Punk IPA", StyleID: 1, BreweryID: 1, FullName: "Punk IPA", ABV: 6.5, MinIBU: 45, MaxIBU: 55}
 
 	json.NewEncoder(w).Encode(response)
 }

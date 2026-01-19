@@ -1,12 +1,33 @@
 package beer
 
 type Beer struct {
-	ID       int64   `json:"id" db:"id"`
-	Name     string  `json:"name" db:"name"`
-	Style    string  `json:"style" db:"style"`
-	Brewery  string  `json:"brewery" db:"brewery"`
-	FullName string  `json:"fullname" db:"fullname"`
-	ABV      float32 `json:"abv" db:"abv"`
-	MinIBU   int16   `json:"minibu" db:"minibu"`
-	MaxIBU   int16   `json:"maxibu" db:"maxibu"`
+	ID        int64   `db:"id"`
+	Name      string  `db:"name"`
+	FullName  string  `db:"fullname"`
+	ABV       float32 `db:"abv"`
+	MinIBU    int16   `db:"minibu"`
+	MaxIBU    int16   `db:"maxibu"`
+	StyleID   int64   `db:"styleid"`
+	BreweryID int64   `db:"breweryid"`
+}
+
+type BeerResponse struct {
+	ID       int64   `json:"id"`
+	Name     string  `json:"name"`
+	FullName string  `json:"fullname"`
+	ABV      float32 `json:"abv"`
+	MinIBU   int16   `json:"minibu"`
+	MaxIBU   int16   `json:"maxibu"`
+	Style    string  `json:"style"`
+	Brewery  string  `json:"brewery"`
+}
+
+type BeerStyle struct {
+	ID   int64  `db:"id"`
+	Name string `db:"name"`
+}
+
+type Brewery struct {
+	ID   int64  `db:"id"`
+	Name string `db:"name"`
 }
