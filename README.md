@@ -28,8 +28,8 @@ OnTapAppRG
 
 ### Backend
 
-- [ ] Beer store (DB access. Not a liquor shop)
-- [ ] User endpoints
+- [x] Beer store (DB access. Not a liquor shop)
+- [x] User endpoints
 - [ ] logging
 - [ ] jwt authentication
 - [ ] authorization
