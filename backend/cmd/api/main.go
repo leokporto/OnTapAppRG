@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/leokporto/OnTapAppRG/backend/internal/beer"
+	"github.com/leokporto/OnTapAppRG/backend/internal/config"
 	"github.com/leokporto/OnTapAppRG/backend/internal/health"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
@@ -23,7 +24,12 @@ func main() {
 		middleware.Timeout(15*time.Second),
 	)
 
-	db, err := sql.Open("pgx", "postgresql://postgres:P@55w0rd@localhost:5432/beers_db?sslmode=disable")
+	configVals, err := config.LoadConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	db, err := sql.Open("pgx", configVals.Conn_String)
 	if err != nil {
 		log.Fatal(err)
 	}
