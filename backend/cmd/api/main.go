@@ -38,11 +38,12 @@ func main() {
 	beerStore := beer.NewPgSqlBeerStore(db)
 	beerHandler := beer.NewHandler(beerStore)
 
-	r.Get("/health", health.Handler())
+	r.Get("/api/health", health.Handler())
 
-	r.Get("/beers", beerHandler.GetAll)
-	r.Get("/beers/{id}", beerHandler.GetById)
-	r.Get("/beers/styles", beerHandler.GetStyles)
+	r.Get("/api/beers", beerHandler.GetAll)
+	r.Get("/api/beers/{id}", beerHandler.GetById)
+	r.Get("/api/beers/styles", beerHandler.GetStyles)
+	r.Get("/api/breweries", beerHandler.GetBreweries)
 
 	http.ListenAndServe(":8080", r)
 }
