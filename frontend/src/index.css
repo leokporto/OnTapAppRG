@@ -1,3 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  /* Backgrounds */
+  --color-bg: #F6F7F9;          /* off-white principal */
+  --color-surface: #FFFFFF;    /* cards / superfícies */
+
+  /* Texto */
+  --color-text: #00171F;        /* preto principal */
+  --color-text-muted: #384452; /* texto secundário */
+
+  /* Brand & destaques */
+  --color-primary: #F9C45A;     /* amarelo (brand) */
+  --color-accent: #78AFD8;      /* azul destaque */
+  --color-danger: #DD6252;      /* vermelho */
+
+  /* Raios */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+
+  /* Tipografia */
+  --font-sans: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
