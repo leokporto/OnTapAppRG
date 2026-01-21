@@ -19,7 +19,8 @@ OnTapApp was originally made using .Net 9 and Blazor. OnTapAppRG uses Go on the 
 OnTapAppRG
 ├── Backend/                   # Main Go API
 ├── Frontend/                  # React folder
-├── Docker/                    # (future) Docker configuration files
+├── Docker/                    # Docker configuration files
+├── Docs/                      # Docs folder
 └── docker-compose.yml         # Container orchestration
 ```
 
@@ -28,8 +29,8 @@ OnTapAppRG
 
 ### Backend
 
-- [ ] Beer store (DB access. Not a liquor shop)
-- [ ] User endpoints
+- [x] Beer store (DB access. Not a liquor shop)
+- [x] User endpoints
 - [ ] logging
 - [ ] jwt authentication
 - [ ] authorization
