@@ -8,7 +8,7 @@ Requisitos:
 - Node.js >= 24
 - npm >= 11
 - Tailwind CSS v4
-- React >= 18.0
+- React >= 19.2
 - Vite >= 7.3
 
 Instalação:

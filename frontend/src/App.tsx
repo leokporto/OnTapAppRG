@@ -1,21 +1,18 @@
-import ontapapp_ico from './assets/ontapapp.jpeg'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import Search from "./pages/Search";
 
-function App() {
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <LandingPage />,
+  },
+  {
+    path: "/search",
+    element: <Search />
+  }
+]);
 
-  return (
-    <>
-      <header className='font-[--font-sans]'>
-        <img src={ontapapp_ico} alt="On Tap app logo" className='rounded-full h-24 w-24' /> 
-        <h1>On Tap app (react + go)</h1>
-      </header>
-      <main className='bg-[--color-surface] font-[--font-sans]'>        
-        <div>
-          App INiciado
-        </div>
-      </main>
-    </>
-
-  )
+export default function App() {
+  return <RouterProvider router={router} />;
 }
-
-export default App
