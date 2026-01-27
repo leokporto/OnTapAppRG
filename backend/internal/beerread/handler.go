@@ -64,3 +64,32 @@ func getBeerByID(
 
 	return beer, nil
 }
+
+func (h *Handler) Find(w http.ResponseWriter, r *http.Request) {
+	//Get from post body
+	filter := chi.URLParam(r, "name")
+
+	beers, err := filterByName(r.Context(), h.store, filter)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(beers)
+}
+
+func filterByName(ctx context.Context, store BeerReadStore,
+	filter string) ([]BeerDTO, error) {
+
+	if filter == "" {
+		return nil, errors.New("filter cannot be empty")
+	}
+
+	beers, err := store.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	return beers, nil
+}
