@@ -6,37 +6,37 @@ import (
 )
 
 type mockBeerStore struct {
-	createFn       func(ctx context.Context, beer *Beer) error
-	listAllFn      func(ctx context.Context) ([]BeerResponse, error)
-	getByIDFn      func(ctx context.Context, beerId int64) (BeerResponse, error)
-	getStylesFn    func(ctx context.Context) ([]BeerStyle, error)
-	getBreweriesFn func(ctx context.Context) ([]Brewery, error)
+	createFn        func(ctx context.Context, beer *Beer) error
+	listFn          func(ctx context.Context) ([]Beer, error)
+	getByIdFn       func(ctx context.Context, beerId int64) (Beer, error)
+	findFn          func(ctx context.Context, beer *Beer, filter string) ([]Beer, error)
+	listByBreweryFn func(ctx context.Context, breweryId int64) ([]Beer, error)
 }
 
 func (m *mockBeerStore) Create(ctx context.Context, beer *Beer) error {
 	return m.createFn(ctx, beer)
 }
 
-func (m *mockBeerStore) ListAll(ctx context.Context) ([]BeerResponse, error) {
-	return m.listAllFn(ctx)
+func (m *mockBeerStore) List(ctx context.Context) ([]Beer, error) {
+	return m.listFn(ctx)
 }
 
-func (m *mockBeerStore) GetByID(ctx context.Context, beerId int64) (BeerResponse, error) {
-	return m.getByIDFn(ctx, beerId)
+func (m *mockBeerStore) GetById(ctx context.Context, beerId int64) (Beer, error) {
+	return m.getByIdFn(ctx, beerId)
 }
 
-func (m *mockBeerStore) GetStyles(ctx context.Context) ([]BeerStyle, error) {
-	return m.getStylesFn(ctx)
+func (m *mockBeerStore) Find(ctx context.Context, beer *Beer, filter string) ([]Beer, error) {
+	return m.findFn(ctx, beer, filter)
 }
 
-func (m *mockBeerStore) GetBreweries(ctx context.Context) ([]Brewery, error) {
-	return m.getBreweriesFn(ctx)
+func (m *mockBeerStore) ListByBrewery(ctx context.Context, breweryId int64) ([]Beer, error) {
+	return m.listByBreweryFn(ctx, breweryId)
 }
 
 func TestGetBeerByID_Ok(t *testing.T) {
 	mockStore := &mockBeerStore{
-		getByIDFn: func(ctx context.Context, beerId int64) (BeerResponse, error) {
-			return BeerResponse{ID: beerId, Name: "Test Beer", Style: "American IPA", Brewery: "Test Beer Company", FullName: "Test Beer IPA", ABV: 6.5, MinIBU: 45, MaxIBU: 55}, nil
+		getByIdFn: func(ctx context.Context, beerId int64) (Beer, error) {
+			return Beer{ID: beerId, Name: "Test Beer", StyleID: 5, BreweryID: 3, FullName: "Test Beer IPA", ABV: 6.5, MinIBU: 45, MaxIBU: 55}, nil
 		},
 	}
 

@@ -8,7 +8,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/leokporto/OnTapAppRG/backend/internal/beer"
+	"github.com/leokporto/OnTapAppRG/backend/internal/beerread"
+	"github.com/leokporto/OnTapAppRG/backend/internal/beerstyle"
+	"github.com/leokporto/OnTapAppRG/backend/internal/brewery"
 	"github.com/leokporto/OnTapAppRG/backend/internal/config"
 	"github.com/leokporto/OnTapAppRG/backend/internal/health"
 
@@ -35,15 +37,24 @@ func main() {
 	}
 	defer db.Close()
 
-	beerStore := beer.NewPgSqlBeerStore(db)
-	beerHandler := beer.NewHandler(beerStore)
+	//beerStore := beer.NewPgSqlStore(db)
+	//beerHandler := beer.NewHandler(beerStore)
+
+	beerReadStore := beerread.NewPgSqlStore(db)
+	beerReadHandler := beerread.NewHandler(beerReadStore)
+
+	breweryStore := brewery.NewPgSqlStore(db)
+	breweryHandler := brewery.NewHandler(breweryStore)
+
+	beerStyleStore := beerstyle.NewPgSqlStore(db)
+	beerStyleHandler := beerstyle.NewHandler(beerStyleStore)
 
 	r.Get("/api/health", health.Handler())
 
-	r.Get("/api/beers", beerHandler.GetAll)
-	r.Get("/api/beers/{id}", beerHandler.GetById)
-	r.Get("/api/beers/styles", beerHandler.GetStyles)
-	r.Get("/api/breweries", beerHandler.GetBreweries)
-
+	r.Get("/api/beers", beerReadHandler.List)
+	r.Get("/api/beers/{id}", beerReadHandler.GetById)
+	r.Get("/api/beers/styles", beerStyleHandler.List)
+	r.Get("/api/breweries", breweryHandler.List)
+	r.Get("/api/breweries/{id}", breweryHandler.GetById)
 	http.ListenAndServe(":8080", r)
 }

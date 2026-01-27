@@ -1,4 +1,4 @@
-package beer
+package beerread
 
 import (
 	"context"
@@ -11,24 +11,24 @@ import (
 )
 
 type Handler struct {
-	store BeerStore
+	store BeerReadStore
 }
 
-func NewHandler(store BeerStore) *Handler {
+func NewHandler(store BeerReadStore) *Handler {
 	return &Handler{store: store}
 }
 
-// func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-// 	beers, err := h.store.List(r.Context())
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
+func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
+	beers, err := h.store.List(r.Context())
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	json.NewEncoder(w).Encode(beers)
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(beers)
 
-// }
+}
 
 func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
@@ -50,17 +50,16 @@ func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 
 func getBeerByID(
 	ctx context.Context,
-	store BeerStore,
+	store BeerReadStore,
 	id int64,
-) (Beer, error) {
-
+) (BeerDTO, error) {
 	if id <= 0 {
-		return Beer{}, errors.New("invalid id")
+		return BeerDTO{}, errors.New("invalid id")
 	}
 
 	beer, err := store.GetById(ctx, id)
 	if err != nil {
-		return Beer{}, err
+		return BeerDTO{}, err
 	}
 
 	return beer, nil
