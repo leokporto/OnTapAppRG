@@ -18,18 +18,6 @@ func NewHandler(store BeerStore) *Handler {
 	return &Handler{store: store}
 }
 
-// func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-// 	beers, err := h.store.List(r.Context())
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusInternalServerError)
-// 		return
-// 	}
-
-// 	w.Header().Set("Content-Type", "application/json")
-// 	json.NewEncoder(w).Encode(beers)
-
-// }
-
 func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)

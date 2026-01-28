@@ -49,7 +49,7 @@ func (pgSqlStore *pgSqlStore) List(ctx context.Context) ([]BeerDTO, error) {
 
 func (pgSqlStore *pgSqlStore) Find(ctx context.Context, filter string) ([]BeerDTO, error) {
 	query := `SELECT beers.id, beers.name, styles.name, breweries.name, fullname, abv, minibu, maxibu FROM beers, styles, breweries
-			  WHERE fullname ILIKE $1`
+			  WHERE (beers.style_id = styles.id AND beers.brewery_id = breweries.id) AND fullname ILIKE $1`
 
 	rows, err := pgSqlStore.db.QueryContext(ctx, query, "%"+filter+"%")
 	if err != nil {

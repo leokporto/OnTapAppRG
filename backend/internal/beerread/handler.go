@@ -18,18 +18,6 @@ func NewHandler(store BeerReadStore) *Handler {
 	return &Handler{store: store}
 }
 
-func (h *Handler) List(w http.ResponseWriter, r *http.Request) {
-	beers, err := h.store.List(r.Context())
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(beers)
-
-}
-
 func (h *Handler) GetById(w http.ResponseWriter, r *http.Request) {
 	idStr := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
@@ -67,7 +55,19 @@ func getBeerByID(
 
 func (h *Handler) Find(w http.ResponseWriter, r *http.Request) {
 	//Get from post body
-	filter := chi.URLParam(r, "name")
+	filter := r.URL.Query().Get("fname")
+
+	if filter == "" {
+		beers, err := h.store.List(r.Context())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(beers)
+		return
+	}
 
 	beers, err := filterByName(r.Context(), h.store, filter)
 	if err != nil {

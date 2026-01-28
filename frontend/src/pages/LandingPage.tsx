@@ -24,7 +24,7 @@ export default function LandingPage() {
                     <h1 className="text-2xl font-bold tracking-tight text-(--color-text-muted)">OnTapAppRG</h1>
 
                     <button className="px-4 py-2 text-sm font-medium border border-(--color-text-muted)
-                        rounded-md text-(--color-text-muted) hover:bg-(--color-surface)">Login</button>               
+                        rounded-md text-(--color-text-muted) hover:bg-(--color-surface) hover:cursor-pointer">Login</button>               
                 </div>
             </header>
             <main className="flex-1 w-full flex justify-center">

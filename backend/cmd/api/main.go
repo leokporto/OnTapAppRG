@@ -14,6 +14,7 @@ import (
 	"github.com/leokporto/OnTapAppRG/backend/internal/config"
 	"github.com/leokporto/OnTapAppRG/backend/internal/health"
 
+	"github.com/go-chi/cors"
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
@@ -24,6 +25,13 @@ func main() {
 		middleware.Logger,
 		middleware.Recoverer,
 		middleware.Timeout(15*time.Second),
+		cors.Handler(cors.Options{
+			AllowedOrigins:   []string{"http://localhost:5173"},
+			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+			AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+			AllowCredentials: false,
+			MaxAge:           300,
+		}),
 	)
 
 	configVals, err := config.LoadConfig()
@@ -51,10 +59,16 @@ func main() {
 
 	r.Get("/api/health", health.Handler())
 
-	r.Get("/api/beers", beerReadHandler.List)
-	r.Get("/api/beers/{id}", beerReadHandler.GetById)
-	r.Get("/api/beers/styles", beerStyleHandler.List)
-	r.Get("/api/breweries", breweryHandler.List)
-	r.Get("/api/breweries/{id}", breweryHandler.GetById)
+	r.Route("/api/beers", func(r chi.Router) {
+		r.Get("/", beerReadHandler.Find)
+		r.Get("/{id}", beerReadHandler.GetById)
+		r.Get("/styles", beerStyleHandler.List)
+	})
+
+	r.Route("/api/breweries", func(r chi.Router) {
+		r.Get("/", breweryHandler.List)
+		r.Get("/{id}", breweryHandler.GetById)
+	})
+
 	http.ListenAndServe(":8080", r)
 }

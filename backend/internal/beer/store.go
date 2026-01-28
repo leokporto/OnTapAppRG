@@ -7,10 +7,7 @@ import (
 
 type BeerStore interface {
 	Create(ctx context.Context, beer *Beer) error
-	// List(ctx context.Context) ([]Beer, error)
 	GetById(ctx context.Context, beerId int64) (Beer, error)
-	// Find(ctx context.Context, beer *Beer, filter string) ([]Beer, error)
-	// ListByBrewery(ctx context.Context, breweryId int64) ([]Beer, error)
 }
 
 type pgSqlStore struct {

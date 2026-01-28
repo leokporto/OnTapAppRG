@@ -6,31 +6,16 @@ import (
 )
 
 type mockBeerStore struct {
-	createFn        func(ctx context.Context, beer *Beer) error
-	listFn          func(ctx context.Context) ([]Beer, error)
-	getByIdFn       func(ctx context.Context, beerId int64) (Beer, error)
-	findFn          func(ctx context.Context, beer *Beer, filter string) ([]Beer, error)
-	listByBreweryFn func(ctx context.Context, breweryId int64) ([]Beer, error)
+	createFn  func(ctx context.Context, beer *Beer) error
+	getByIdFn func(ctx context.Context, beerId int64) (Beer, error)
 }
 
 func (m *mockBeerStore) Create(ctx context.Context, beer *Beer) error {
 	return m.createFn(ctx, beer)
 }
 
-func (m *mockBeerStore) List(ctx context.Context) ([]Beer, error) {
-	return m.listFn(ctx)
-}
-
 func (m *mockBeerStore) GetById(ctx context.Context, beerId int64) (Beer, error) {
 	return m.getByIdFn(ctx, beerId)
-}
-
-func (m *mockBeerStore) Find(ctx context.Context, beer *Beer, filter string) ([]Beer, error) {
-	return m.findFn(ctx, beer, filter)
-}
-
-func (m *mockBeerStore) ListByBrewery(ctx context.Context, breweryId int64) ([]Beer, error) {
-	return m.listByBreweryFn(ctx, breweryId)
 }
 
 func TestGetBeerByID_Ok(t *testing.T) {
