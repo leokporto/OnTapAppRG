@@ -48,7 +48,7 @@ func (pgSqlStore *pgSqlStore) List(ctx context.Context) ([]BeerDTO, error) {
 }
 
 func (pgSqlStore *pgSqlStore) Find(ctx context.Context, filter string) ([]BeerDTO, error) {
-	query := `SELECT beers.id, beers.name, styles.name, breweries.name, fullname, abv, minibu, maxibu FROM beers, styles, breweries
+	query := `SELECT beers.id, beers.name, styles.name, breweries.id, breweries.name, fullname, abv, minibu, maxibu FROM beers, styles, breweries
 			  WHERE (beers.style_id = styles.id AND beers.brewery_id = breweries.id) AND fullname ILIKE $1`
 
 	rows, err := pgSqlStore.db.QueryContext(ctx, query, "%"+filter+"%")
@@ -60,7 +60,7 @@ func (pgSqlStore *pgSqlStore) Find(ctx context.Context, filter string) ([]BeerDT
 	var beers []BeerDTO
 	for rows.Next() {
 		var beer BeerDTO
-		if err := rows.Scan(&beer.ID, &beer.Name, &beer.Style, &beer.Brewery,
+		if err := rows.Scan(&beer.ID, &beer.Name, &beer.Style, &beer.BreweryID, &beer.Brewery,
 			&beer.FullName, &beer.ABV, &beer.MinIBU, &beer.MaxIBU); err != nil {
 			return nil, err
 		}
@@ -92,6 +92,8 @@ func (pgSqlStore *pgSqlStore) ListByBrewery(ctx context.Context, breweryId int64
 			&beer.FullName, &beer.ABV, &beer.MinIBU, &beer.MaxIBU); err != nil {
 			return nil, err
 		}
+		beer.BreweryID = breweryId
+
 		beers = append(beers, beer)
 	}
 
@@ -103,14 +105,14 @@ func (pgSqlStore *pgSqlStore) ListByBrewery(ctx context.Context, breweryId int64
 }
 
 func (pgSqlStore *pgSqlStore) GetById(ctx context.Context, beerId int64) (BeerDTO, error) {
-	query := `SELECT beers.id, beers.name, styles.name, breweries.name, fullname, abv, minibu, maxibu FROM beers, styles, breweries
+	query := `SELECT beers.id, beers.name, styles.name, breweries.id, breweries.name, fullname, abv, minibu, maxibu FROM beers, styles, breweries
 			  WHERE beers.style_id = styles.id AND beers.brewery_id = breweries.id AND beers.id = $1`
 
 	row := pgSqlStore.db.QueryRowContext(ctx, query, beerId)
 
 	var filteredBeer BeerDTO
 
-	err := row.Scan(&filteredBeer.ID, &filteredBeer.Name, &filteredBeer.Style, &filteredBeer.Brewery,
+	err := row.Scan(&filteredBeer.ID, &filteredBeer.Name, &filteredBeer.Style, &filteredBeer.BreweryID, &filteredBeer.Brewery,
 		&filteredBeer.FullName, &filteredBeer.ABV, &filteredBeer.MinIBU, &filteredBeer.MaxIBU)
 
 	if err != nil {

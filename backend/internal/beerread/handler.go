@@ -56,20 +56,12 @@ func getBeerByID(
 func (h *Handler) Find(w http.ResponseWriter, r *http.Request) {
 	//Get from post body
 	filter := r.URL.Query().Get("fname")
+	breweryFilter := r.URL.Query().Get("bid")
 
-	if filter == "" {
-		beers, err := h.store.List(r.Context())
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	var beers []BeerDTO
+	var err error
 
-		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(beers)
-		return
-	}
-
-	beers, err := filterByName(r.Context(), h.store, filter)
+	beers, err = getFilterResults(r.Context(), h.store, filter, breweryFilter)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -77,6 +69,21 @@ func (h *Handler) Find(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(beers)
+}
+
+func getFilterResults(ctx context.Context, store BeerReadStore,
+	filter string, breweryFilter string) ([]BeerDTO, error) {
+
+	switch {
+	case filter != "" && breweryFilter == "":
+		return filterByName(ctx, store, filter)
+	case breweryFilter != "" && filter == "":
+		return filterByBrewery(ctx, store, breweryFilter)
+	case breweryFilter == "" && filter == "":
+		return store.List(ctx)
+	default:
+		return nil, errors.New("invalid filter combination. Choose either beer name (fname) or brewery id (bid).")
+	}
 }
 
 func filterByName(ctx context.Context, store BeerReadStore,
@@ -87,6 +94,26 @@ func filterByName(ctx context.Context, store BeerReadStore,
 	}
 
 	beers, err := store.Find(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
+	return beers, nil
+}
+
+func filterByBrewery(ctx context.Context, store BeerReadStore,
+	breweryFilter string) ([]BeerDTO, error) {
+
+	breweryId, err := strconv.ParseInt(breweryFilter, 10, 64)
+	if err != nil {
+		return nil, errors.New("invalid brewery id")
+	}
+
+	if breweryId <= 0 {
+		return nil, errors.New("invalid brewery id")
+	}
+
+	beers, err := store.ListByBrewery(ctx, breweryId)
 	if err != nil {
 		return nil, err
 	}

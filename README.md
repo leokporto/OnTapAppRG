@@ -29,16 +29,32 @@ OnTapAppRG
 
 ### Backend
 
-- [x] Beer store (DB access. Not a liquor shop)
-- [x] User endpoints
+- [x] Beer domain: handlers, routes (endpoints), types and store (DB access. Not a liquor shop)
+- [x] BeerRead aggregates
+- [x] BeerStyles domain
+- [x] Brewery domain
+- [ ] User domain (if necessary)
 - [ ] logging
 - [ ] jwt authentication
 - [ ] authorization
+- [ ] Observability (like seq on OnTapApp)
 
 ### Frontend
 
-- [ ] The whole UI: Header, content, nav menus
+- [x] Landing page
+- [x] Main layout
+- [x] Search page
+- [x] Brewery details page
+- [x] About page
+- [ ] Sign in and login
 - [ ] User registration and authentication using Google authenticator (OpenID)
+
+### Deploy
+
+- [ ] Reverse proxy
+- [ ] Docker compose
+- [ ] Backend image
+- [ ] Frontend image
 
 
 ---

@@ -1,5 +1,6 @@
 import type { Beer } from "../types/Beer"
-import pint_icon from '../assets/pint.png';
+import pint_icon from '../assets/pint.png'
+import { Link } from "react-router-dom"
 
 type beerCardProps = {
     beer: Beer
@@ -28,8 +29,10 @@ export default function BeerCard({ beer }: beerCardProps) {
                 {beer.name}
             </h3>
 
-            <p className="text-sm text-(--color-text-muted) truncate">
-                {beer.brewery}
+            <p className="text-md text-(--color-text-muted) truncate">
+                <Link to={`/breweries/${beer.breweryid}`}>
+                    {beer.brewery}
+                </Link>
             </p>
 
             <p className="text-sm italic text-(--color-text-muted) truncate">

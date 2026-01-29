@@ -2,7 +2,8 @@ export type Beer = {
     id: number;
     name: string;
     style: string;
-    brewery: string;
+    breweryid: number;
+    brewery: string;    
     abv: number;
     minibu: number;
     maxibu: number;
