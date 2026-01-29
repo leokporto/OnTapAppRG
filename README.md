@@ -25,7 +25,7 @@ OnTapAppRG
 ```
 
 
-## Future Features
+## Backlog
 
 ### Backend
 
@@ -56,6 +56,16 @@ OnTapAppRG
 - [ ] Backend image
 - [ ] Frontend image
 
+
+---
+
+## Screenshots
+
+Here some screenshots of the application:
+
+<img src="./Docs/images/landingpage.png" alt="Landing Page" width="600" title="Landing Page" />
+
+<img src="./Docs/images/searchpage.png" alt="Search Page" width="600" title="Search Page" />
 
 ---
 
