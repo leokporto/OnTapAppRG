@@ -4,8 +4,14 @@ import (
 	"net/http"
 )
 
-func Handler() http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("Service is healthy!"))
-	}
+type Handler struct {
+	healthMessage string
+}
+
+func NewHandler() *Handler {
+	return &Handler{healthMessage: "Service is healthy!"}
+}
+
+func (h *Handler) Handler(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte(h.healthMessage))
 }
